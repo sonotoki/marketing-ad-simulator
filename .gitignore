@@ -29,3 +29,9 @@ backups/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Generated Prisma Client
+backend/src/generated/prisma/

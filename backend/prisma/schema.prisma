@@ -1,0 +1,265 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserRole {
+  ADMIN
+  MARKETING_EMPLOYEE
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+}
+
+enum BenchmarkSourceType {
+  OFFICIAL_API
+  OPEN_CSV
+  MANUAL
+}
+
+enum BenchmarkMetricType {
+  CPC
+  CVR
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum RefreshRunStatus {
+  RUNNING
+  SUCCESS
+  PARTIAL_SUCCESS
+  FAILED
+}
+
+enum BackupType {
+  AUTOMATIC
+  MANUAL
+  PRE_RESTORE
+}
+
+enum BackupStatus {
+  SUCCESS
+  FAILED
+  RESTORED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  name         String
+  passwordHash String?
+  role         UserRole  @default(MARKETING_EMPLOYEE)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  authIdentities AuthIdentity[]
+  refreshTokens  RefreshToken[]
+  products       Product[]
+  scenarios      Scenario[]
+  refreshRuns    BenchmarkRefreshRun[]
+  backupLogs     BackupLog[]
+}
+
+model AuthIdentity {
+  id             String       @id @default(uuid())
+  userId         String
+  provider       AuthProvider
+  providerUserId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerUserId])
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  familyId  String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+}
+
+model BenchmarkSource {
+  id          String              @id @default(uuid())
+  name        String
+  type        BenchmarkSourceType
+  sourceUrl   String?
+  description String?
+  isActive    Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  benchmarks Benchmark[]
+}
+
+model Country {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  name      String
+  currency  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  benchmarks Benchmark[]
+}
+
+model Industry {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  benchmarks Benchmark[]
+}
+
+model AdPlatform {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  benchmarks Benchmark[]
+}
+
+model Benchmark {
+  id                 String              @id @default(uuid())
+  sourceId           String
+  countryId          String
+  industryId         String
+  platformId         String
+  metricType         BenchmarkMetricType
+  value              Float
+  currency           String?
+  reportYear         Int
+  collectedAt        DateTime            @default(now())
+  verificationStatus VerificationStatus  @default(PENDING)
+  sourceUrl          String?
+  notes              String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  source   BenchmarkSource @relation(fields: [sourceId], references: [id])
+  country  Country         @relation(fields: [countryId], references: [id])
+  industry Industry        @relation(fields: [industryId], references: [id])
+  platform AdPlatform      @relation(fields: [platformId], references: [id])
+
+  @@unique([sourceId, countryId, industryId, platformId, metricType, reportYear])
+  @@index([countryId, industryId, platformId])
+  @@index([metricType, verificationStatus])
+  @@index([reportYear])
+}
+
+model Product {
+  id                String    @id @default(uuid())
+  name              String
+  description       String?
+  sellingPriceMinor Int
+  currency          String
+  costRate          Float
+  createdBy         String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+
+  creator   User       @relation(fields: [createdBy], references: [id], onDelete: Restrict)
+  scenarios Scenario[]
+
+  @@index([createdBy])
+  @@index([deletedAt])
+}
+
+model Scenario {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String?
+  name      String
+  currency  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User              @relation(fields: [userId], references: [id], onDelete: Restrict)
+  product  Product?          @relation(fields: [productId], references: [id], onDelete: SetNull)
+  snapshot ScenarioSnapshot?
+
+  @@index([userId])
+  @@index([productId])
+}
+
+model ScenarioSnapshot {
+  id                  String   @id @default(uuid())
+  scenarioId          String   @unique
+  inputData           String
+  resultData          String
+  benchmarkReferences String
+  createdAt           DateTime @default(now())
+
+  scenario Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+}
+
+model BenchmarkRefreshRun {
+  id              String           @id @default(uuid())
+  userId          String?
+  status          RefreshRunStatus @default(RUNNING)
+  startedAt       DateTime         @default(now())
+  completedAt     DateTime?
+  recordsFetched  Int              @default(0)
+  recordsImported Int              @default(0)
+  recordsRejected Int              @default(0)
+  errorMessage    String?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([startedAt])
+}
+
+model SystemSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model BackupLog {
+  id           String       @id @default(uuid())
+  userId       String?
+  type         BackupType
+  status       BackupStatus
+  fileName     String?
+  fileSize     BigInt?
+  checksum     String?
+  createdAt    DateTime     @default(now())
+  completedAt  DateTime?
+  errorMessage String?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([type, createdAt])
+  @@index([status])
+  @@index([userId])
+}
