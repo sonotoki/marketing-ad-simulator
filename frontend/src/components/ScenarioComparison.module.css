@@ -1,0 +1,305 @@
+.section {
+  margin-top: 36px;
+  padding: 26px;
+  color: #1e293b;
+  background: #f4f7fc;
+  border: 1px solid #e6edf7;
+  border-radius: 18px;
+}
+
+.header {
+  margin-bottom: 25px;
+}
+
+.title {
+  margin: 0;
+  color: #172554;
+  font-size: 25px;
+  font-weight: 750;
+  letter-spacing: -0.6px;
+}
+
+.description {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.scenarioGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.scenarioCard {
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e3eaf5;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(37, 75, 130, 0.045);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.scenarioCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(37, 75, 130, 0.09);
+}
+
+.scenarioHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.scenarioTitle {
+  margin: 9px 0 0;
+  color: #1e293b;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.scenarioBadge {
+  display: inline-block;
+  padding: 5px 9px;
+  color: #2563eb;
+  background: #eaf2ff;
+  border: 1px solid #d7e6ff;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.5px;
+}
+
+.field {
+  display: block;
+  margin-top: 14px;
+}
+
+.fieldLabel {
+  display: block;
+  margin-bottom: 7px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 12px;
+  color: #1e293b;
+  background: #f8faff;
+  border: 1px solid #e2eaf5;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.input:focus {
+  background: #ffffff;
+  border-color: #5b8def;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.11);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.button {
+  padding: 11px 17px;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #dce5f1;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.button:hover:not(:disabled) {
+  background: #edf4ff;
+  transform: translateY(-1px);
+}
+
+.primaryButton {
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.17);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.removeButton {
+  padding: 6px 10px;
+  color: #dc4c64;
+  background: #fff1f2;
+  border: 1px solid #ffe0e5;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.error {
+  margin-top: 14px;
+  padding: 12px 14px;
+  color: #b91c1c;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 9px;
+  font-size: 13px;
+}
+
+.resultsSection {
+  margin-top: 30px;
+  animation: fadeIn 450ms ease both;
+}
+
+.sectionTitle {
+  margin: 0 0 15px;
+  color: #172554;
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid #e2eaf5;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(37, 75, 130, 0.035);
+}
+
+.resultsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.resultsTable th,
+.resultsTable td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf1f7;
+  white-space: nowrap;
+}
+
+.resultsTable th {
+  color: #64748b;
+  background: #f7f9fd;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.3px;
+}
+
+.resultsTable td {
+  color: #334155;
+}
+
+.resultsTable tr:last-child td {
+  border-bottom: 0;
+}
+
+.metricName {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.chartCard {
+  min-width: 0;
+  padding: 21px;
+  background: #ffffff;
+  border: 1px solid #e2eaf5;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(37, 75, 130, 0.045);
+  animation: fadeIn 550ms ease both;
+  transition: box-shadow 180ms ease;
+}
+
+.chartCard:hover {
+  box-shadow: 0 9px 22px rgba(37, 75, 130, 0.08);
+}
+
+.chartTitle {
+  margin: 0;
+  color: #1e293b;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.chartDescription {
+  margin: 6px 0 14px;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.chart {
+  width: 100%;
+  height: 260px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scenarioCard,
+  .chartCard,
+  .button {
+    transition: none;
+  }
+
+  .resultsSection,
+  .chartCard {
+    animation: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .section {
+    padding: 17px;
+  }
+
+  .chartGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .chartCard {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 21px;
+  }
+}
