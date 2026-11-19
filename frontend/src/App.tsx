@@ -1,3 +1,4 @@
+import ScenarioComparison from './components/ScenarioComparison'
 import { useState } from 'react'
 import styles from './App.module.css'
 
@@ -256,7 +257,7 @@ function App() {
             </div>
           )}
         </section>
-
+            <ScenarioComparison />
         <footer className={styles.footer}>
           MarketingLab <span>•</span> Ad Performance Simulator
           <span className={styles.version}>Version 0.1.0</span>
