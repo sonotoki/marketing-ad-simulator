@@ -1,5 +1,5 @@
 import ScenarioComparison from './components/ScenarioComparison'
-import CPAHeatmap from './components/CPAHeatmap'
+import MonteCarloSimulation from './components/MonteCarloSimulation'
 import { useState } from 'react'
 import styles from './App.module.css'
 
@@ -258,18 +258,25 @@ function App() {
             </div>
           )}
         </section>
-            {Number(inputs.cpc) >= 10 &&
-            Number(inputs.cpc) <= 1000 &&
-            Number(inputs.cvr) >= 0.1 &&
-            Number(inputs.cvr) <= 10 && (
-              <CPAHeatmap
-                budget={Number(inputs.budget)}
-                cpc={Number(inputs.cpc)}
-                cvr={Number(inputs.cvr)}
-              />
-            )}
+          {Number(inputs.cpc) >= 10 &&
+          Number(inputs.cpc) <= 1000 &&
+          Number(inputs.cvr) >= 0.1 &&
+          Number(inputs.cvr) <= 10 &&
+          Number(inputs.budget) >= 100000 &&
+          Number(inputs.budget) <= 5000000 &&
+          Number(inputs.sellingPrice) >= 1 &&
+          Number(inputs.productCostRate) >= 0 &&
+          Number(inputs.productCostRate) <= 100 && (
+            <MonteCarloSimulation
+              budget={Number(inputs.budget)}
+              cpc={Number(inputs.cpc)}
+              cvr={Number(inputs.cvr)}
+              sellingPrice={Number(inputs.sellingPrice)}
+              productCostRate={Number(inputs.productCostRate)}
+            />
+          )}
 
-            <ScenarioComparison />
+          <ScenarioComparison />
         <footer className={styles.footer}>
           MarketingLab <span>•</span> Ad Performance Simulator
           <span className={styles.version}>Version 0.1.0</span>
