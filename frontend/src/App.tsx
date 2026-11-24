@@ -1,7 +1,10 @@
 import ScenarioComparison from './components/ScenarioComparison'
+import CPAHeatmap from './components/CPAHeatmap'
 import MonteCarloSimulation from './components/MonteCarloSimulation'
 import { useState } from 'react'
 import styles from './App.module.css'
+import GoalSeek from './components/GoalSeek'
+import Dashboard from './components/Dashboard'
 
 type Inputs = {
   budget: string
@@ -39,6 +42,10 @@ const yen = (value: number) =>
   `¥${Math.round(value).toLocaleString('ja-JP')}`
 
 function App() {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+    const [activePage, setActivePage] = useState<
+    'dashboard' | 'simulator' | 'reports'
+    >('simulator')
   const [inputs, setInputs] = useState<Inputs>(initialInputs)
   const [result, setResult] = useState<ApiResponse | null>(null)
   const [loading, setLoading] = useState(false)
@@ -108,15 +115,35 @@ function App() {
         </div>
 
         <div className={styles.navLabel}>WORKSPACE</div>
-        <div className={styles.navItem}>
+        <button
+          type="button"
+          className={`${styles.navItem} ${
+            activePage === 'dashboard' ? styles.active : ''
+          }`}
+          onClick={() => setActivePage('dashboard')}
+        >
           <span>▦</span> Dashboard
-        </div>
-        <div className={`${styles.navItem} ${styles.active}`}>
+        </button>
+
+        <button
+          type="button"
+          className={`${styles.navItem} ${
+            activePage === 'simulator' ? styles.active : ''
+          }`}
+          onClick={() => setActivePage('simulator')}
+        >
           <span>◈</span> Ad Simulator
-        </div>
-        <div className={styles.navItem}>
+        </button>
+
+        <button
+          type="button"
+          className={`${styles.navItem} ${
+            activePage === 'reports' ? styles.active : ''
+          }`}
+          onClick={() => setActivePage('reports')}
+        >
           <span>▤</span> Reports
-        </div>
+        </button>
 
         <div className={styles.sidebarBottom}>
           <div className={styles.avatar}>A</div>
@@ -128,16 +155,29 @@ function App() {
       </aside>
 
       <section className={styles.main}>
+        {activePage === 'dashboard' ? (
+          <Dashboard onOpenSimulator={() => setActivePage('simulator')} />
+        ) : activePage === 'reports' ? (
+          <div>
+            <h1>Reports</h1>
+            <p>Reports section is coming soon.</p>
+          </div>
+        ) : (
+          <>
         <header className={styles.header}>
           <div>
             <div className={styles.breadcrumb}>Workspace / Ad Simulator</div>
             <h1>Advertising Simulator</h1>
             <p>Plan your advertising budget and estimate campaign performance.</p>
           </div>
+          <div className={styles.headerActions}>
           <div className={styles.status}>
             <span className={styles.statusDot}></span>
             Simulation Engine Ready
           </div>
+
+          
+        </div>
         </header>
 
         <form onSubmit={handleSubmit}>
@@ -258,6 +298,18 @@ function App() {
             </div>
           )}
         </section>
+        {Number(inputs.cpc) >= 10 &&
+          Number(inputs.cpc) <= 1000 &&
+          Number(inputs.cvr) >= 0.1 &&
+          Number(inputs.cvr) <= 10 &&
+          Number(inputs.budget) >= 100000 &&
+          Number(inputs.budget) <= 5000000 && (
+            <CPAHeatmap
+              budget={Number(inputs.budget)}
+              cpc={Number(inputs.cpc)}
+              cvr={Number(inputs.cvr)}
+            />
+          )}
           {Number(inputs.cpc) >= 10 &&
           Number(inputs.cpc) <= 1000 &&
           Number(inputs.cvr) >= 0.1 &&
@@ -276,12 +328,75 @@ function App() {
             />
           )}
 
+          <GoalSeek
+              cpc={Number(inputs.cpc)}
+              cvr={Number(inputs.cvr)}
+              sellingPrice={Number(inputs.sellingPrice)}
+              productCostRate={Number(inputs.productCostRate)}
+            />
+
           <ScenarioComparison />
         <footer className={styles.footer}>
           MarketingLab <span>•</span> Ad Performance Simulator
           <span className={styles.version}>Version 0.1.0</span>
         </footer>
+  </>
+)}
       </section>
+
+        {isSettingsOpen && (
+          <>
+            <button
+              type="button"
+              className={styles.drawerBackdrop}
+              onClick={() => setIsSettingsOpen(false)}
+              aria-label="Close settings"
+            />
+
+            <aside
+              className={styles.settingsDrawer}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="settings-title"
+            >
+              <div className={styles.drawerHeader}>
+                <h2 id="settings-title">Settings</h2>
+
+                <button
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={() => setIsSettingsOpen(false)}
+                  aria-label="Close settings"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className={styles.drawerContent}>
+                <section>
+                  <h3>Profile</h3>
+                  <p>Manage your account settings.</p>
+                </section>
+
+                <section>
+                  <h3>Appearance</h3>
+                  <p>Customize your workspace appearance.</p>
+                </section>
+
+                <section>
+                  <h3>Language</h3>
+                  <p>English</p>
+                </section>
+
+                <section>
+                  <h3>Notifications</h3>
+                  <p>Manage notification preferences.</p>
+                </section>
+              </div>
+            </aside>
+          </>
+        )}
+
     </main>
   )
 }
