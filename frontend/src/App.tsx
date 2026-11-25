@@ -5,6 +5,7 @@ import { useState } from 'react'
 import styles from './App.module.css'
 import GoalSeek from './components/GoalSeek'
 import Dashboard from './components/Dashboard'
+import Reports from './components/Reports'
 
 type Inputs = {
   budget: string
@@ -144,7 +145,13 @@ function App() {
         >
           <span>▤</span> Reports
         </button>
-
+                  <button
+          type="button"
+          className={styles.navItem}
+          onClick={() => setIsSettingsOpen(true)}
+        >
+          <span>⚙</span> Settings
+        </button>
         <div className={styles.sidebarBottom}>
           <div className={styles.avatar}>A</div>
           <div>
@@ -158,11 +165,18 @@ function App() {
         {activePage === 'dashboard' ? (
           <Dashboard onOpenSimulator={() => setActivePage('simulator')} />
         ) : activePage === 'reports' ? (
-          <div>
-            <h1>Reports</h1>
-            <p>Reports section is coming soon.</p>
-          </div>
-        ) : (
+  result ? (
+    <Reports result={result} />
+            ) : (
+              <div>
+                <h1>Reports</h1>
+                <p>No simulation results available.</p>
+                <button onClick={() => setActivePage('simulator')}>
+                  Go to Ad Simulator
+                </button>
+              </div>
+            )
+          ) : (
           <>
         <header className={styles.header}>
           <div>
