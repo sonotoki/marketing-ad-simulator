@@ -44,6 +44,7 @@ const yen = (value: number) =>
 
 function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [activePage, setActivePage] = useState<
     'dashboard' | 'simulator' | 'reports'
     >('simulator')
@@ -109,10 +110,26 @@ function App() {
 
   return (
     <main className={styles.app}>
-      <aside className={styles.sidebar}>
+      <aside
+          className={`${styles.sidebar} ${
+            isMobileMenuOpen ? styles.sidebarOpen : ''
+          }`}
+        >
         <div className={styles.brand}>
           <div className={styles.brandIcon}>M</div>
-          <span>Marketing<span className={styles.brandLight}>Lab</span></span>
+
+          <span>
+            Marketing<span className={styles.brandLight}>Lab</span>
+          </span>
+
+          <button
+            type="button"
+            className={styles.mobileMenuButton}
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            ×
+          </button>
         </div>
 
         <div className={styles.navLabel}>WORKSPACE</div>
@@ -121,7 +138,10 @@ function App() {
           className={`${styles.navItem} ${
             activePage === 'dashboard' ? styles.active : ''
           }`}
-          onClick={() => setActivePage('dashboard')}
+          onClick={() => {
+            setActivePage('dashboard')
+            setIsMobileMenuOpen(false)
+          }}
         >
           <span>▦</span> Dashboard
         </button>
@@ -131,7 +151,10 @@ function App() {
           className={`${styles.navItem} ${
             activePage === 'simulator' ? styles.active : ''
           }`}
-          onClick={() => setActivePage('simulator')}
+          onClick={() => {
+            setActivePage('simulator')
+            setIsMobileMenuOpen(false)
+          }}
         >
           <span>◈</span> Ad Simulator
         </button>
@@ -141,14 +164,20 @@ function App() {
           className={`${styles.navItem} ${
             activePage === 'reports' ? styles.active : ''
           }`}
-          onClick={() => setActivePage('reports')}
+          onClick={() => {
+            setActivePage('reports')
+            setIsMobileMenuOpen(false)
+          }}
         >
           <span>▤</span> Reports
         </button>
                   <button
           type="button"
           className={styles.navItem}
-          onClick={() => setIsSettingsOpen(true)}
+          onClick={() => {
+            setIsSettingsOpen(true)
+            setIsMobileMenuOpen(false)
+          }}
         >
           <span>⚙</span> Settings
         </button>
@@ -160,8 +189,24 @@ function App() {
           </div>
         </div>
       </aside>
+      {isMobileMenuOpen && (
+        <button
+          type="button"
+          className={styles.mobileMenuBackdrop}
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-label="Close navigation menu"
+        />
+      )}
 
       <section className={styles.main}>
+      <button
+        type="button"
+        className={styles.mobileMenuToggle}
+        onClick={() => setIsMobileMenuOpen(true)}
+        aria-label="Open navigation menu"
+      >
+        ☰
+      </button>
         {activePage === 'dashboard' ? (
           <Dashboard onOpenSimulator={() => setActivePage('simulator')} />
         ) : activePage === 'reports' ? (

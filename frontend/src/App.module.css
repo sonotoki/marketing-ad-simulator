@@ -635,3 +635,96 @@
     animation: none;
   }
 }
+
+/* Mobile Navigation */
+.mobileMenuToggle,
+.mobileMenuButton {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  /* Hamburger button */
+  .mobileMenuToggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7ef;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #202438;
+    font-size: 25px;
+    cursor: pointer;
+  }
+
+  /* Sidebar drawer */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1002;
+    width: min(70vw, 280px);
+    height: 100vh;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  /* Show navigation when drawer opens */
+  .sidebarOpen .brand {
+    margin-bottom: 35px;
+  }
+
+  .sidebarOpen .navLabel {
+    display: block;
+  }
+
+  .sidebarOpen .navItem {
+    display: flex;
+  }
+
+  .sidebarOpen .sidebarBottom {
+    display: flex;
+  }
+
+  /* Close button inside drawer */
+  .mobileMenuButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 25px;
+    cursor: pointer;
+  }
+
+  /* Dark background */
+    .mobileMenuBackdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 1001 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: rgba(15, 18, 35, 0.55) !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    appearance: none;
+  }
+}
