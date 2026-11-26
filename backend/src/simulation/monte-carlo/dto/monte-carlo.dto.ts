@@ -1,4 +1,6 @@
+import { BusinessCategory } from '../../../common/enums/business-category.enum';
 import {
+  IsEnum,
   IsNumber,
   Max,
   Min,
@@ -6,6 +8,9 @@ import {
 import { Type } from 'class-transformer';
 
 export class MonteCarloDto {
+  @IsEnum(BusinessCategory)
+  businessCategory: BusinessCategory;
+
   @Type(() => Number)
   @IsNumber()
   @Min(100000)

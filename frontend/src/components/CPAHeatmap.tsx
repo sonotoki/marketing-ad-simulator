@@ -1,12 +1,21 @@
 import styles from './CPAHeatmap.module.css'
 
 type CPAHeatmapProps = {
+  businessCategory: string
   budget: number
   cpc: number
   cvr: number
 }
 
-function CPAHeatmap({ budget, cpc, cvr }: CPAHeatmapProps) {
+function CPAHeatmap({ businessCategory, budget, cpc, cvr }: CPAHeatmapProps) {
+  const categoryLabels: Record<string, string> = {
+    automobile: "Automobile",
+    flower: "Flower",
+    fashion: "Fashion",
+    food: "Food & Restaurant",
+    electronics: "Electronics",
+    other: "Other",
+  }
   const clamp = (value: number, min: number, max: number) =>
     Math.min(Math.max(value, min), max)
 
@@ -46,6 +55,7 @@ function CPAHeatmap({ budget, cpc, cvr }: CPAHeatmapProps) {
         <div>
           <h2 className={styles.title}>CPA Heatmap</h2>
           <p className={styles.description}>
+            Business Category: {categoryLabels[businessCategory] ?? businessCategory}<br />
             See how CPC and conversion rate changes affect your cost per acquisition.
           </p>
         </div>

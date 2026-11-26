@@ -1,10 +1,11 @@
 
 import { Injectable } from '@nestjs/common';
 import { ScenarioInputDto } from './dto/compare-scenarios.dto';
+import { BusinessCategory } from '../../common/enums/business-category.enum';
 
 @Injectable()
 export class ScenarioService {
-  compare(scenarios: ScenarioInputDto[]) {
+  compare(businessCategory: BusinessCategory, scenarios: ScenarioInputDto[]) {
     return scenarios.map((scenario) => {
       const {
         name,
@@ -25,6 +26,7 @@ export class ScenarioService {
       const roi = (profit / budget) * 100;
 
       return {
+        businessCategory,
         name,
         inputs: scenario,
         results: {

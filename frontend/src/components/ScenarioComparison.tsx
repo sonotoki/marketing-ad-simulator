@@ -49,7 +49,11 @@ const yen = (value: number) =>
 const formatNumber = (value: number) =>
   value.toLocaleString('ja-JP', { maximumFractionDigits: 2 })
 
-function ScenarioComparison() {
+type ScenarioComparisonProps = {
+  businessCategory: string
+}
+
+function ScenarioComparison({ businessCategory }: ScenarioComparisonProps) {
   const [scenarios, setScenarios] = useState<Scenario[]>([
     createScenario('Scenario A'),
     createScenario('Scenario B'),
@@ -107,6 +111,7 @@ function ScenarioComparison() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          businessCategory,
           scenarios: scenarios.map((scenario) => ({
             ...scenario,
             budget: Number(scenario.budget),

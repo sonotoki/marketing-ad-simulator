@@ -1,11 +1,16 @@
 import { Type } from 'class-transformer';
+import { BusinessCategory } from '../../../common/enums/business-category.enum';
 import {
+  IsEnum,
   IsNumber,
   Max,
   Min,
 } from 'class-validator';
 
 export class GoalSeekDto {
+  @IsEnum(BusinessCategory)
+  businessCategory: BusinessCategory;
+
   @Type(() => Number)
   @IsNumber()
   @Min(1)

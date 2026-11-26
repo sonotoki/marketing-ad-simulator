@@ -4,6 +4,7 @@ import styles from './Reports.module.css'
 type ReportsProps = {
   result: {
     inputs: {
+      businessCategory: string
       budget: number
     }
     results: {
@@ -43,6 +44,16 @@ function Reports({ result }: ReportsProps) {
         <div>
           <h1>Campaign Report</h1>
           <p>Latest advertising simulation results.</p>
+          <p>
+            Business Category: {{
+              automobile: 'Automobile',
+              flower: 'Flower',
+              fashion: 'Fashion',
+              food: 'Food & Restaurant',
+              electronics: 'Electronics',
+              other: 'Other',
+            }[inputs.businessCategory] ?? inputs.businessCategory}
+          </p>
         </div>
 
         <button

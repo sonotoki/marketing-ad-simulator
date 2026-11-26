@@ -17,6 +17,7 @@ type GoalSeekResult = {
 }
 
 type GoalSeekProps = {
+  businessCategory: string
   cpc: number
   cvr: number
   sellingPrice: number
@@ -24,6 +25,7 @@ type GoalSeekProps = {
 }
 
 export default function GoalSeek({
+  businessCategory,
   cpc,
   cvr,
   sellingPrice,
@@ -46,6 +48,7 @@ export default function GoalSeek({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          businessCategory,
           targetProfit: Number(targetProfit),
           cpc,
           cvr,

@@ -27,7 +27,9 @@ type Results = {
 }
 
 type ApiResponse = {
-  inputs: { [K in keyof Inputs]: number }
+  inputs: { [K in keyof Inputs]: number } & {
+    businessCategory: string
+  }
   results: Results
 }
 
@@ -49,9 +51,17 @@ function App() {
     'dashboard' | 'simulator' | 'reports'
     >('simulator')
   const [inputs, setInputs] = useState<Inputs>(initialInputs)
+  const [businessCategory, setBusinessCategory] = useState(() => {
+    return localStorage.getItem('marketing-business-category') || 'automobile'
+  })
   const [result, setResult] = useState<ApiResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const updateBusinessCategory = (category: string) => {
+    setBusinessCategory(category)
+    localStorage.setItem('marketing-business-category', category)
+  }
 
   const updateInput = (name: keyof Inputs, value: string) => {
     const normalizedValue = value.replace(/^0+(?=\d)/, '')
@@ -68,6 +78,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          businessCategory,
           budget: Number(inputs.budget),
           cpc: Number(inputs.cpc),
           cvr: Number(inputs.cvr),
@@ -249,6 +260,24 @@ function App() {
               <span className={styles.step}>01 / INPUT</span>
             </div>
 
+            <div className={styles.categoryField}>
+              <label className={styles.field}>
+                <span>Business Category</span>
+                <select
+                  value={businessCategory}
+                  onChange={(e) => updateBusinessCategory(e.target.value)}
+                >
+                  <option value="automobile">Automobile</option>
+                  <option value="flower">Flower</option>
+                  <option value="fashion">Fashion</option>
+                  <option value="food">Food & Restaurant</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="other">Other</option>
+                </select>
+                <small>Select the business type for your campaign.</small>
+              </label>
+            </div>
+
             <div className={styles.formGrid}>
               <label className={styles.field}>
                 <span>Monthly Ad Budget <small>(JPY)</small></span>
@@ -364,6 +393,7 @@ function App() {
           Number(inputs.budget) >= 100000 &&
           Number(inputs.budget) <= 5000000 && (
             <CPAHeatmap
+              businessCategory={businessCategory}
               budget={Number(inputs.budget)}
               cpc={Number(inputs.cpc)}
               cvr={Number(inputs.cvr)}
@@ -379,6 +409,7 @@ function App() {
           Number(inputs.productCostRate) >= 0 &&
           Number(inputs.productCostRate) <= 100 && (
             <MonteCarloSimulation
+              businessCategory={businessCategory}
               budget={Number(inputs.budget)}
               cpc={Number(inputs.cpc)}
               cvr={Number(inputs.cvr)}
@@ -388,13 +419,14 @@ function App() {
           )}
 
           <GoalSeek
+            businessCategory={businessCategory}
               cpc={Number(inputs.cpc)}
               cvr={Number(inputs.cvr)}
               sellingPrice={Number(inputs.sellingPrice)}
               productCostRate={Number(inputs.productCostRate)}
             />
 
-          <ScenarioComparison />
+          <ScenarioComparison businessCategory={businessCategory} />
         <footer className={styles.footer}>
           MarketingLab <span>•</span> Ad Performance Simulator
           <span className={styles.version}>Version 0.1.0</span>

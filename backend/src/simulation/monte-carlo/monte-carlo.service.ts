@@ -57,6 +57,7 @@ export class MonteCarloService {
     });
 
     return {
+      businessCategory: dto.businessCategory,
       simulationCount: this.simulationCount,
       variation: this.variation * 100,
       results: {

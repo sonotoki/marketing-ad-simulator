@@ -11,6 +11,7 @@ import {
 import styles from './MonteCarloSimulation.module.css'
 
 type Props = {
+  businessCategory: string
   budget: number
   cpc: number
   cvr: number
@@ -35,6 +36,7 @@ type MonteCarloResponse = {
 }
 
 function MonteCarloSimulation({
+  businessCategory,
   budget,
   cpc,
   cvr,
@@ -57,6 +59,7 @@ function MonteCarloSimulation({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          businessCategory,
           budget,
           cpc,
           cvr,

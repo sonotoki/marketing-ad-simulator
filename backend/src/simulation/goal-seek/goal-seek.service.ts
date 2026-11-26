@@ -24,6 +24,7 @@ export class GoalSeekService {
     if (profitRate <= 0) {
       return {
         success: false,
+        businessCategory: dto.businessCategory,
         message:
           'The target profit cannot be achieved with the current campaign parameters.',
         profitRate: Number((profitRate * 100).toFixed(2)),

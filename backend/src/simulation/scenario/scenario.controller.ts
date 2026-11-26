@@ -11,6 +11,6 @@ export class ScenarioController {
 
   @Post('compare')
   compare(@Body() dto: CompareScenariosDto) {
-    return this.scenarioService.compare(dto.scenarios);
+    return this.scenarioService.compare(dto.businessCategory, dto.scenarios);
   }
 }

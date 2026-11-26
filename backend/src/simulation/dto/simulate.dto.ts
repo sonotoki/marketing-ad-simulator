@@ -1,11 +1,16 @@
 import { Type } from 'class-transformer';
+import { BusinessCategory } from '../../common/enums/business-category.enum';
 import {
+  IsEnum,
   IsNumber,
   Max,
   Min,
 } from 'class-validator';
 
 export class SimulateDto {
+  @IsEnum(BusinessCategory)
+  businessCategory: BusinessCategory;
+
   @Type(() => Number)
   @IsNumber()
   @Min(100000)

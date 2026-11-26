@@ -1,6 +1,8 @@
 
+import { BusinessCategory } from '../../../common/enums/business-category.enum';
 import {
   ArrayMaxSize,
+  IsEnum,
   ArrayMinSize,
   IsArray,
   IsNumber,
@@ -46,6 +48,9 @@ export class ScenarioInputDto {
 }
 
 export class CompareScenariosDto {
+  @IsEnum(BusinessCategory)
+  businessCategory: BusinessCategory;
+
   @IsArray()
   @ArrayMinSize(2)
   @ArrayMaxSize(3)
